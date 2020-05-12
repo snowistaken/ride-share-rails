@@ -1,9 +1,25 @@
 <h2>Driver Info:</h2>
 
-<h2><%= @driver.name %></h2>
-<h3><%= @driver.vin %></h3>
-<%# show rating here %>
+<ul>
+  <li>Name: <%= @driver.name %></li>
+  <li>VIN: <%= @driver.vin %></li>
+  <li>Average Rating: <%= @driver.average_rating(@driver.id) %></li>
+  <li>Total Earnings: <%= @driver.total_earnings(@driver.id)%></li>
+  <li>Availability: <% if @driver.available == "true"%>
+                        <%= "Currently Available" %>
+                    <% else%>
+                        <%= "Currently Unavailable" %>
+                    <% end %></li>
+  <li>Trips:
+    <ul>
+      <%@driver.trips.each do |trip|%>
+      <li><%= link_to trip.date, trip_path(trip.id) %></li>
+      <% end %>
+    </ul>
+  </li>
+</ul>
 
 <%# link to trips here %>
 
 <%= link_to "Edit Driver", edit_driver_path %>
+<%= link_to "Delete Driver", driver_path(@driver), method: :delete, data: {confirm: "Are you sure?"} %>

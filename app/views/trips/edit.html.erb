@@ -1,0 +1,25 @@
+<div>
+  <%= form_with model: @trip, class: 'edit-trip'  do |f| %>
+    <div>
+      <%= f.label :date %>
+      <%= f.text_field :date %>
+    </div>
+    <div>
+      <%= f.label :cost %>
+      <%= f.text_field :cost %>
+    </div>
+    <div>
+      <%= f.label :passenger_id %>
+      <%= f.text_field :passenger_id %>
+    </div>
+    <div>
+      <%= f.label :driver_id %>
+      <%= f.text_field :driver_id %>
+    </div>
+    <div>
+      <%= f.label :rating %>
+      <%= f.text_field :rating %>
+    </div>
+      <%= f.submit "edit" %>
+  <% end %>
+</div>

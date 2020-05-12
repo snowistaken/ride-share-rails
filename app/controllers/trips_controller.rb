@@ -8,6 +8,15 @@ class TripsController < ApplicationController
         @trips = Trip.all
       end
     end
+
+    def edit
+      @trip = Trip.find_by(id: params[:id])
+  
+      if @trip.nil?
+        head :not_found
+        return
+      end
+    end
   
     def show
       id = params[:id].to_i
