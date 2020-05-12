@@ -1,0 +1,16 @@
+<%= form_with model: @driver, class: 'driver-form'  do |f| %>
+ <p>Please provide the following information to save the driver to the database:</p>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+  <div>
+    <%= f.label :authore %>
+    <%= f.text_field :author %>
+  </div>
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+  <%= f.submit "Add a driver!" %>
+<% end %>

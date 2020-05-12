@@ -1,0 +1,8 @@
+<h1>Drivers List</h1>
+<ul>
+   <% @divers.each do |diver| %>
+      <li>
+        <%= link_to driver.name, driver_path(driver.id)  %>
+      </li>
+    <% end %>
+</ul>
