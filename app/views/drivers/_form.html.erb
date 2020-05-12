@@ -1,0 +1,13 @@
+<div>
+  <%= form_with model: @driver, class: 'driver-form'  do |f| %>
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+    <div>
+      <%= f.label :vin %>
+      <%= f.text_field :vin %>
+    </div>
+      <%= f.submit action_name %>
+  <% end %>
+</div>
