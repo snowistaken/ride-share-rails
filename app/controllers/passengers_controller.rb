@@ -1,7 +1,5 @@
 class PassengersController < ApplicationController
 
-  class DriversController < ApplicationController
-
     def index
       @passengers = Passenger.all
     end
@@ -17,7 +15,7 @@ class PassengersController < ApplicationController
     end
   
     def edit
-      @passenger = Passegner.find_by(id: params[:id])
+      @passenger = Passenger.find_by(id: params[:id])
   
       if @passenger.nil?
         head :not_found
@@ -42,7 +40,15 @@ class PassengersController < ApplicationController
     end
   
     def destroy
-  
+      @passenger = Passenger.find_by(id: params[:id])
+
+      if @passenge.nil?
+        head :not_found
+        return
+      else
+        @passenger.destroy
+        redirect_to passenger_path
+      end
     end
   
     def new

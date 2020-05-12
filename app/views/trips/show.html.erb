@@ -1,0 +1,7 @@
+<h2>Trip Info:</h2>
+
+<h2><%= @trip.date %></h2>
+<h3><%= @trip.cost %></h3>
+<h3><%= @trip.passenger.name %></h3>
+
+<%= link_to "Delete Trip", trip_path(@trip), method: :delete, data: {confirm: "Are you sure?"} %>

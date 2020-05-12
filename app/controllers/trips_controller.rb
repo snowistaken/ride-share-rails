@@ -1,9 +1,12 @@
 class TripsController < ApplicationController
 
-  class DriversController < ApplicationController
-
     def index
-      @trips = Trip.all
+      if params[:passenger_id]
+        passenger = Passenger.find_by(id: params[:passenger_id])
+        @trips = passenger.trips
+      else
+        @trips = Trip.all
+      end
     end
   
     def show
@@ -17,11 +20,15 @@ class TripsController < ApplicationController
     end
   
     def destroy
-  
-    end
-  
-    def new
-      @trip = Trip.new(trip_params)
+      @trip = Trip.find_by(id: params[:id])
+
+      if @trip.nil?
+        head :not_found
+        return
+      else
+        @trip.destroy
+        redirect_to driver_path
+      end
     end
   
     def create
