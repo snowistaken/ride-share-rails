@@ -64,20 +64,6 @@ class TripsController < ApplicationController
         return
       end
     end
-
-    # def updaterating
-    #   @trip = Trip.find_by(id: params[:id])
-  
-    #   if @trip.nil?
-    #     head :not_found
-    #     return
-    #   elsif @trip.save(trip_params)
-    #     redirect_to trip_path
-    #     return
-    #   else
-    #     render :editrating
-    #   end
-    # end
   
     def create
       @passenger = Passenger.find_by(id: params[:passenger_id])
