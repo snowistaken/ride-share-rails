@@ -9,4 +9,7 @@ Rails.application.routes.draw do
   end
 
   resources :trips, except:[:new]
+
+  get "/trips/:id/rating", to: "trips#rating", as: "rating"
+
 end

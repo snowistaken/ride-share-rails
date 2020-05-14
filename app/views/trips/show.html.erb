@@ -2,13 +2,13 @@
 
 <ul>
   <li>Date: <%= @trip.date %></li>
-  <li>Cost: <%= @trip.cost %></li>
+  <li>Cost: <%= (@trip.cost.to_f / 100).round(2) %></li>
   <li>Passenger: <%= link_to "#{@trip.passenger.name}", passenger_path(@trip.passenger) %></li>
   <li>Driver: <%= link_to "#{@trip.driver.name}", driver_path(@trip.driver) %></li>
-  <% if @trip.rating %>
+  <% if @trip.rating != 0 %>
     <li>Rating: <%= @trip.rating %></li>
   <% else %>
-    <li><%= link_to "Rate this Trip", trip_path(@trip), method: :edit %>
+    <li><%= link_to "Rate this Trip", rating_path(@trip) %>
   <% end %>
 </ul>
 

@@ -1,0 +1,9 @@
+<div>
+  <%= form_with model: @trip, class: 'rating'  do |f| %>
+    <div>
+      <%= f.label :rating %>
+      <%= f.text_field :rating %>
+    </div>
+      <%= f.submit "Rate Trip" %>
+  <% end %>
+</div>

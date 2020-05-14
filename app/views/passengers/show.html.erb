@@ -3,7 +3,7 @@
 <ul>
   <li>Name: <%= @passenger.name %></li>
   <li>Phone Number: <%= @passenger.phone_num %></li>
-  <li>Total $ Spent: <%= @passenger.total_spent(@passenger) %></li>
+  <li>Total Spent: $<%= @passenger.total_spent(@passenger) %></li>
   <li>Trips:
     <ul>
       <%@passenger.trips.each do |trip|%>
@@ -15,5 +15,6 @@
   </li>
 </ul>
 
+<%= link_to "Call New Trip", passenger_trips_path(@passenger.id), method: :post, data: {confirm: "Are you sure you would like to call a driver?"} %>
 <%= link_to "Edit Passenger", edit_passenger_path %>
 <%= link_to "Delete Passenger", passenger_path(@passenger), method: :delete, data: {confirm: "Are you sure?"} %>

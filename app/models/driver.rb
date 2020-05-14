@@ -8,7 +8,7 @@ class Driver < ApplicationRecord
       ratings << trip.rating.to_f
     end
 
-    return (ratings.sum / ratings.length)
+    return (ratings.sum / ratings.length).round(2)
   end
 
   def total_earnings(id)
@@ -18,6 +18,6 @@ class Driver < ApplicationRecord
       profit << (trip.cost.to_f - 1.65) * 0.8
     end
 
-    return profit.sum
+    return (profit.sum / 100).round(2)
   end
 end

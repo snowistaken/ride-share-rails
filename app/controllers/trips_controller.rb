@@ -2,8 +2,8 @@ class TripsController < ApplicationController
 
     def index
       if params[:passenger_id]
-        passenger = Passenger.find_by(id: params[:passenger_id])
-        @trips = passenger.trips
+        @passenger = Passenger.find_by(id: params[:passenger_id])
+        @trips = @passenger.trips
       else
         @trips = Trip.all
       end
@@ -14,6 +14,22 @@ class TripsController < ApplicationController
   
       if @trip.nil?
         head :not_found
+        return
+      end
+    end
+
+    def update
+      @trip = Trip.find_by(id: params[:id])
+  
+      if @trip.nil?
+        head :not_found
+        return
+      elsif
+        @trip.update(trip_params)
+        redirect_to trip_path
+        return
+      else
+        render :edit
         return
       end
     end
@@ -39,11 +55,41 @@ class TripsController < ApplicationController
         redirect_to driver_path
       end
     end
+
+    def rating
+      @trip = Trip.find_by(id: params[:id])
+  
+      if @trip.nil?
+        head :not_found
+        return
+      end
+    end
+
+    # def updaterating
+    #   @trip = Trip.find_by(id: params[:id])
+  
+    #   if @trip.nil?
+    #     head :not_found
+    #     return
+    #   elsif @trip.save(trip_params)
+    #     redirect_to trip_path
+    #     return
+    #   else
+    #     render :editrating
+    #   end
+    # end
   
     def create
+      @passenger = Passenger.find_by(id: params[:passenger_id])
+      @driver = @passenger.find_driver
+
+      trip_params = {driver_id: @driver.id, passenger_id: @passenger.id, date: Date.today, rating: 0, cost: rand(1..9999)}
+
       @trip = Trip.new(trip_params)
       if @trip.save
-        redirect_to trip_path
+        redirect_to trip_path(@trip.id)
+        @driver.available = false
+        @driver.save
         return
       else
         render :new
