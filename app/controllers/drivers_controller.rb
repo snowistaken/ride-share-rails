@@ -1,5 +1,4 @@
 class DriversController < ApplicationController
-
   def index
     @drivers = Driver.all
   end
@@ -29,8 +28,7 @@ class DriversController < ApplicationController
     if @driver.nil?
       head :not_found
       return
-    elsif
-      @driver.update(driver_params)
+    elsif @driver.update(driver_params)
       redirect_to driver_path(@driver.id)
       return
     else
@@ -60,6 +58,7 @@ class DriversController < ApplicationController
 
     if @driver.save
       redirect_to driver_path(@driver.id)
+      return
     else
       render :new
       return
@@ -71,5 +70,4 @@ class DriversController < ApplicationController
   def driver_params
     return params.require(:driver).permit(:name, :vin, :available)
   end
-
 end

@@ -1,72 +1,70 @@
 class PassengersController < ApplicationController
+  def index
+    @passengers = Passenger.all
+  end
 
-    def index
-      @passengers = Passenger.all
-    end
-  
-    def show
-      id = params[:id].to_i
-      @passenger = Passenger.find_by(id: id)
-  
-      if @passenger.nil?
-        head :not_found
-        return
-      end
-    end
-  
-    def edit
-      @passenger = Passenger.find_by(id: params[:id])
-  
-      if @passenger.nil?
-        head :not_found
-        return
-      end
-    end
-  
-    def update
-      @passenger = Passenger.find_by(id: params[:id])
-  
-      if @passenger.nil?
-        head :not_found
-        return
-      elsif
-        @passenger.update(passenger_params)
-        redirect_to passenger_path
-        return
-      else
-        render :edit
-        return
-      end
-    end
-  
-    def destroy
-      passenger_id = params[:id]
-      @passenger = Passenger.find_by(id: params[:id])
+  def show
+    id = params[:id].to_i
+    @passenger = Passenger.find_by(id: id)
 
-      if @passenger.nil?
-        head :not_found
-        return
-      else
-        @passenger.destroy
-        redirect_to passenger_path
-        return
-      end
+    if @passenger.nil?
+      head :not_found
+      return
     end
-  
-    def new
-      @passenger = Passenger.new
+  end
+
+  def edit
+    @passenger = Passenger.find_by(id: params[:id])
+
+    if @passenger.nil?
+      head :not_found
+      return
     end
-  
-    def create
-      @passenger = Passenger.new(passenger_params)
-      if @passenger.save
-        redirect_to passenger_path(@passenger)
-        return
-      else
-        render :new
-        return
-      end
+  end
+
+  def update
+    @passenger = Passenger.find_by(id: params[:id])
+
+    if @passenger.nil?
+      head :not_found
+      return
+    elsif @passenger.update(passenger_params)
+      redirect_to passenger_path
+      return
+    else
+      render :edit
+      return
     end
+  end
+
+  def destroy
+    passenger_id = params[:id]
+    @passenger = Passenger.find_by(id: params[:id])
+
+    if @passenger.nil?
+      head :not_found
+      return
+    else
+      @passenger.destroy
+      redirect_to passenger_path
+      return
+    end
+  end
+
+  def new
+    @passenger = Passenger.new
+  end
+
+  def create
+    @passenger = Passenger.new(passenger_params)
+    if @passenger.save
+      redirect_to passenger_path(@passenger)
+      return
+    else
+      render :new
+      return
+    end
+  end
 
   private
 

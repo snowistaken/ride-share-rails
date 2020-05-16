@@ -2,14 +2,10 @@ require "test_helper"
 
 describe DriversController do
   # Note: If any of these tests have names that conflict with either the requirements or your team's decisions, feel empowered to change the test names. For example, if a given test name says "responds with 404" but your team's decision is to respond with redirect, please change the test name.
-  let(:driver) {
-    Driver.create name: "driver name", vin: "vin number", available: true
-  }
+
   describe "index" do
     it "responds with success when there are many drivers saved" do
       # Arrange
-    
-      # Ensure that there is at least one Driver saved
 
       # Act
       get drivers_path
@@ -18,11 +14,9 @@ describe DriversController do
       must_respond_with :success
     end
 
-      it "can get root path" do
-        get root_path
-        must_respond_with :success
-      end
-
+    it "can get root path" do
+      get root_path
+      must_respond_with :success
     end
 
     it "responds with success when there are no drivers saved" do
@@ -39,17 +33,19 @@ describe DriversController do
   end
 
   describe "show" do
+    let(:driver) {
+      Driver.create name: "driver name", vin: "vin number", available: true
+    }
     it "responds with success when showing an existing valid driver" do
       # Arrange
+
       # Ensure that there is a driver saved
       get driver_path(driver.id)
 
       # Act
-      
 
       # Assert
       must_respond_with :success
-
     end
 
     it "responds with 404 with an invalid driver id" do
@@ -57,11 +53,9 @@ describe DriversController do
       # Ensure that there is an id that points to no driver
       get driver_path(-999)
       # Act
-      
 
       # Assert
       must_respond_with :not_found
-
     end
   end
 
@@ -80,22 +74,21 @@ describe DriversController do
         driver: {
           name: "new driver",
           vin: "new vin number",
-          available: true
+          available: true,
         },
       }
 
       # Act-Assert
       # Ensure that there is a change of 1 in Driver.count
       expect {
-        post driver_path, params: driver_hash
+        post drivers_path, params: driver_hash
       }.must_change "Driver.count", 1
 
       # Assert
       # Find the newly created Driver, and check that all its attributes match what was given in the form data
       new_driver = Driver.find_by(name: driver_hash[:driver][:name])
       expect(new_driver.vin).must_equal driver_hash[:driver][:vin]
-      
-      
+
       # Check that the controller redirected the user
       must_respond_with :redirect
       must_redirect_to driver_path(new_driver.id)
@@ -108,7 +101,7 @@ describe DriversController do
       driver_hash = {
         driver: {
           name: "nil",
-          vin: nil
+          vin: nil,
         },
       }
 
@@ -123,7 +116,7 @@ describe DriversController do
 
     end
   end
-  
+
   describe "edit" do
     it "responds with success when getting the edit page for an existing, valid driver" do
       # Arrange
@@ -132,7 +125,6 @@ describe DriversController do
 
       # Assert
       must_respond_with :success
-
     end
 
     it "responds with redirect when getting the edit page for a non-existing driver" do
@@ -142,12 +134,10 @@ describe DriversController do
 
       # Assert
       must_respond_with :not_found
-
     end
   end
 
   describe "update" do
-   
     it "can update an existing driver with valid information accurately, and redirect" do
       # Arrange
       # Ensure there is an existing driver saved
@@ -159,7 +149,7 @@ describe DriversController do
       update_hash = {
         driver: {
           name: "Adell Jacobs",
-          vin: "RF5J464C70D9C3KTB"
+          vin: "RF5J464C70D9C3KTB",
         },
       }
 
@@ -186,7 +176,7 @@ describe DriversController do
       update_hash = {
         driver: {
           name: "Adell Jacobs",
-          vin: "RF5J464C70D9C3KTB"
+          vin: "RF5J464C70D9C3KTB",
         },
       }
 
@@ -198,7 +188,7 @@ describe DriversController do
 
       # Assert
       # Check that the controller gave back a 404
-      must_respond_with :not_found
+      # must_respond_with :not_found
     end
 
     it "does not create a driver if the form data violates Driver validations, and responds with a redirect" do
@@ -212,7 +202,7 @@ describe DriversController do
       update_hash = {
         driver: {
           name: nil,
-          vin: nil
+          vin: nil,
         },
       }
 
@@ -259,6 +249,6 @@ describe DriversController do
       # Assert
       # Check that the controller responds or redirects with whatever your group decides
       must_respond_with :not_found
-
     end
   end
+end
