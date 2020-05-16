@@ -1,5 +1,7 @@
 class Driver < ApplicationRecord
   has_many :trips
+  validates :name, presence: true
+  validates :vin, presence: true
 
   def average_rating(id)
     @driver = Driver.find_by(id: id)
@@ -7,7 +9,7 @@ class Driver < ApplicationRecord
     @driver.trips.each do |trip|
       ratings << trip.rating.to_f
     end
-
+    return nil if ratings.empty?
     return (ratings.sum / ratings.length).round(2)
   end
 

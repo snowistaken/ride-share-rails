@@ -2,7 +2,9 @@ require "test_helper"
 
 describe DriversController do
   # Note: If any of these tests have names that conflict with either the requirements or your team's decisions, feel empowered to change the test names. For example, if a given test name says "responds with 404" but your team's decision is to respond with redirect, please change the test name.
-
+  let(:driver) {
+    Driver.create name: "driver name", vin: "vin number", available: true
+  }
   describe "index" do
     it "responds with success when there are many drivers saved" do
       # Arrange
@@ -33,9 +35,6 @@ describe DriversController do
   end
 
   describe "show" do
-    let(:driver) {
-      Driver.create name: "driver name", vin: "vin number", available: true
-    }
     it "responds with success when showing an existing valid driver" do
       # Arrange
 
@@ -100,7 +99,7 @@ describe DriversController do
       # Set up the form data so that it violates Driver validations
       driver_hash = {
         driver: {
-          name: "nil",
+          name: nil,
           vin: nil,
         },
       }
@@ -108,7 +107,7 @@ describe DriversController do
       # Act-Assert
       # Ensure that there is no change in Driver.count
       expect {
-        post driver_path, params: driver_hash
+        post drivers_path, params: driver_hash
       }.wont_change "Driver.count"
 
       # Assert
@@ -161,8 +160,8 @@ describe DriversController do
 
       # Assert
       # Use the local variable of an existing driver's id to find the driver again, and check that its attributes are updated
-      expect(update_driver.name).must_equal update_hash[:driver][:name]
-      expect(update_driver.vin).must_equal update_hash[:driver][:vin]
+      expect(driver.name).must_equal update_hash[:driver][:name]
+      expect(driver.vin).must_equal update_hash[:driver][:vin]
       # Check that the controller redirected the user
       must_respond_with :redirect
     end
@@ -197,7 +196,7 @@ describe DriversController do
       driver = Driver.create(name: "Adell Jacobs", vin: "RF5J464C70D9C3KTB")
       # Ensure there is an existing driver saved
       # Assign the existing driver's id to a local variable
-      driver_id = driver_id
+      driver_id = driver.id
       # Set up the form data so that it violates Driver validations
       update_hash = {
         driver: {
