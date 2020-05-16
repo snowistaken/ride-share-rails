@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root to: "homepage#index"
+  root to: "homepages#index"
 
   resources :drivers
 
@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :trips, only: [:index, :create, :update]
   end
 
-  resources :trips, except:[:new]
+  resources :trips, except: [:new]
 
   get "/trips/:id/rating", to: "trips#rating", as: "rating"
 end
