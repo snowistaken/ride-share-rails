@@ -25,7 +25,7 @@ describe TripsController do
   describe "create" do
 
     it "can create a trip" do
-      driver = Driver.create(name: "Yeni", vin: "RF5J464C70D9C3KBT")
+      driver = Driver.create(name: "Yeni", vin: "RF5J464C70D9C3KBT", available: "true")
       passenger = Passenger.create(name: "Sam", phone_num: "2060772908")
 
     trip_hash = {
@@ -34,11 +34,11 @@ describe TripsController do
         passenger_id: passenger.id,
         date: Date.today,
         cost:34
-      },
+      }
     }
     
       expect {
-        post passenger_trip_path(passenger), params: trip_hash
+        post passenger_trips_path(passenger.id), params: trip_hash
       }.must_differ "Trip.count", 1
       
       expect(Trip.last.passenger_id).must_equal trip_hash[:trip][:passenger_id]
@@ -53,7 +53,7 @@ describe TripsController do
           passenger_id: passenger.id,
           date: Date.today,
           cost: 45
-        },
+        }
       }
       expect {
         post trips_path, params: trip_hash
@@ -77,14 +77,16 @@ describe TripsController do
   end
 
   describe "update" do
-    let (:new_trip_hash)  {
-      trip: {
-        driver_id: Driver.first.id,
-        passenger_id: Passenger.first.id,
-        date: "Sun, 10 May 2020",
-        rating: 2,
-        cost: 23
-      },
+    let (:new_trip_hash) {
+      { 
+        trip: {
+          driver_id: Driver.first.id,
+          passenger_id: Passenger.first.id,
+          date: "Sun, 10 May 2020",
+          rating: 2,
+          cost: 23
+        }
+      }
     }
   
     it "will update a model with a valid post request" do
@@ -122,7 +124,7 @@ describe TripsController do
     trip = Trip.create(driver_id: driver.id, passenger_id: passenger.id, date: Date.today, rating: 4, cost: 25)
 
     it "destroys the trip instance in DB when trip exist, then redirect" do
-      expect {delete trips_path(trip.id)}.must_differ "Trip.count", -1
+      expect {delete trip_path(trip.id)}.must_differ "Trip.count", -1
     end
     
     it "does not change the DB when the trip does not exit, then responds with redirect" do

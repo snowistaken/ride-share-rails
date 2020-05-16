@@ -11,5 +11,4 @@ Rails.application.routes.draw do
   resources :trips, except:[:new]
 
   get "/trips/:id/rating", to: "trips#rating", as: "rating"
-
 end

@@ -1,96 +1,103 @@
 require "test_helper"
 
 describe PassengersController do
+  
+  let (:passenger) {
+    Passenger.create name: "Passenger name", phone_num: "phone number"
+  }
+
   describe "index" do
     # Your tests go here
-    it "upon saving passenger, responds with success" do
-      Passenger.create(name: "Em", phone_num: "2134567890")
+    it "could get the index path" do
       
-      get "/passengers"
+      get passengers_path
 
-      must_responsd_with :success
+      must_respond_with :success
     end
 
-    it "also responds with success, if no passenger saved" do
-      get "/passengers"
+    it "could get the root path" do
+      
+      get root_path
 
-      must_responsd_with :success
+      must_respond_with :success
     end
   end
 
   describe "show" do
-    it "success when showing an existing valid passenger" do
-      passenger = Passenger.create(name: "Em", phone_num: "2134567890")
-
-      valid_id = passenger.id 
-      get "/passengers/#{valid_id}"
-
-      must_responsd_with :success
-
-    end
-    # Your tests go here
-    it "gives 404 with invalid passenger_id" do
+    it "could get a valid passenger" do
       
-    invalid_id = -1
+      get passenger_path(passenger.id)
 
-    get "/passengers/#{invalid_id}"
+      must_respond_with :success
+    end
+   
+    it "display not_found for an invalid passenger" do
 
-    must_responsd_with :not_found
+      get passenger_path(0)
+
+      must_respond_with :not_found
     end
   end
 
   describe "new" do
 
-    it "responsds with success" do
+    it "can get the new passenger page" do
       get new_passenger_path
-      must_responsd_with :success
+      must_respond_with :success
     end
     # Your tests go here
   end
 
   describe "create" do
 
-    it "creates new passenger w/valid params, and redirects" do
+    it "creates new passenger" do
       passenger_hash = {
         passenger: {
-          num: "York", 
+          name: "York", 
           phone_num: "4356784567"
         },
       }
 
       expect {
-        post passenger_path, params: passenger_hash
+        post passengers_path, params: passenger_hash
       }.must_differ "Passenger.count", 1
 
-      passenger = Passenger.last
-      expect(passenger.name).must_equal passenger_hash[:passenger][:name]
-      expect(passenger.phone_num).must_equal passenger_hash[:passenger][:phone_num]
-      must_redirect_to passenger_path(Passenger.find_by(name: "Asmera").id)
+      new_passenger = Passenger.find_by(name: passenger_hash[:passenger][:name])
+      expect(new_passenger.phone_num).must_equal passenger_hash[:passenger][:phone_num]
+
+      must_respond_with :redirect
+      must_redirect_to passenger_path(new_passenger.id)
     end
-    # Your tests go here
+   
   end
 
   describe "edit" do
     
-    it "responds w/success editing valid passenger" do
-      passenger = Passenger.create(name: "Washington", phone_num: "2056743456")
+    it "can get the edit for passenger" do
+     get edit_passenger_path(passenger.id)
 
-      get edit_passenger_path(passenger.id)
-
-      must_responsd_with :success
+      must_respond_with :success
     end
     
-    it "when requested to edit nonexistent passenger, responds with redirect" do
-      invalid_id = -1
+    it "respond w/redirect when trying to edit nonexistent passenger" do
+      
 
-      get edit_passenger_path(invalid_id)
+      get edit_passenger_path(-999)
 
-      must_responsd_with :not_found
+      must_respond_with :not_found
     end
   end
 
   describe "update" do
 
+    let (:new_passenger_hash) {
+      {
+        passenger: {
+          name: "passenger name",
+          phone_num: "passenger phone num"
+        },
+      }
+    }
     it "update valid passenger and redirect" do
       passenger = Passenger.create(name: "Habu", phone_num: "3424564325")
       passenger_id = passenger.id
@@ -111,7 +118,7 @@ describe PassengersController do
       expect(updated_passenger.name).must_equal update_hash[:passenger][:name]
       expect(updated_passenger.phone_num).must_equal update_hash[:passenger][:phone_num]
 
-      must_responsd_with :redirect
+      must_respond_with :redirect
     end
 
     it "give 404, when trying to update passenger w/invalid id" do
@@ -128,7 +135,7 @@ describe PassengersController do
         patch passenger_path(invalid_id), params: update_hash
       }.wont_change "Passenger.count"
 
-      must_responsd_with :not_found
+      must_respond_with :not_found
     end
   end
 
@@ -142,7 +149,7 @@ describe PassengersController do
         delete passenger_path(passenger.id)
       }.must_differ "Passenger.count", -1
 
-      must_responsd_with :redirect
+      must_respond_with :redirect
     end
 
     it "wont change DB for nonexistent passenger" do
@@ -153,7 +160,7 @@ describe PassengersController do
         delete passenger_path(invalid_id)
       }.wont_change "Passenger.count"
 
-      must_responsd_with :not_found
+      must_respond_with :not_found
     end
   end
 end

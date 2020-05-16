@@ -14,7 +14,6 @@ class Passenger < ApplicationRecord
   def find_driver
     available_drivers = Driver.where(available: "true")
     first_driver = available_drivers.first
-
     if first_driver
       return first_driver
     else
